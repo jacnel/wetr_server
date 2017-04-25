@@ -1,0 +1,12 @@
+from flask import Flask, render_template, request, url_for
+
+app = Flask(__name__)
+
+@app.route('/', methods=['POST'])
+def main():
+    user = request.form['user']
+    weight = request.form['weight']
+    return "Succeed;" + user + ";" + "weight"
+
+if __name__ == "__main__":
+    app.run()
