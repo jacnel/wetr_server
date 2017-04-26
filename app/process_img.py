@@ -105,15 +105,10 @@ def proc_with_tesseract(display_image):
     thresh = PIL.Image.fromarray(thresh)
     return image_to_string(thresh, lang="eng", config="-psm 100 -c tessedit_char_whitelist=.0123456789")
 
-if __name__ == "__main__":
-    args = sys.argv
-    if len(args) > 1:
-        print "Processing image..."
-        img = cv2.imread(args[1])
-        small_gray_img = preproc(img)
-        filtered_edged_img = filter_and_edge(small_gray_img)
-        display_contours = contour_and_extract_norm_display(img, filtered_edged_img)
-        warped_display = warp_perspective(img, display_contours)
-        ocr_value = proc_with_tesseract(warped_display)
-        print "tesseract read: " + ocr_value
-        print "...Done"
+def process_image(np_img):
+    small_gray_img = preproc(img)
+    filtered_edged_img = filter_and_edge(small_gray_img)
+    display_contours = contour_and_extract_norm_display(img, filtered_edged_img)
+    warped_display = warp_perspective(img, display_contours)
+    return proc_with_tesseract(warped_display)
+
