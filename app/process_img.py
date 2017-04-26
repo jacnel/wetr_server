@@ -10,7 +10,7 @@ import PIL
 def preproc(img_file):
 
     # first, the image is read in using OpenCVs imread function then resized to reduce computational load
-    img_small = imutils.resize(img, height=300)
+    img_small = imutils.resize(img_file, height=300)
 
     # bilateral filter is an edge preserving noise reducing filter
     return cv2.cvtColor(img_small , cv2.COLOR_BGR2GRAY) # convert to gray scale
@@ -106,9 +106,9 @@ def proc_with_tesseract(display_image):
     return image_to_string(thresh, lang="eng", config="-psm 100 -c tessedit_char_whitelist=.0123456789")
 
 def process_image(np_img):
-    small_gray_img = preproc(img)
+    small_gray_img = preproc(np_img)
     filtered_edged_img = filter_and_edge(small_gray_img)
-    display_contours = contour_and_extract_norm_display(img, filtered_edged_img)
-    warped_display = warp_perspective(img, display_contours)
+    display_contours = contour_and_extract_norm_display(np_img, filtered_edged_img)
+    warped_display = warp_perspective(np_img, display_contours)
     return proc_with_tesseract(warped_display)
 
