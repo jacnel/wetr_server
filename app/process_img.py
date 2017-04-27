@@ -53,6 +53,10 @@ def contour_and_extract_norm_display(img, edged_img):
             display_contour = approx
             break
 
+    # check that display is found
+    if display_contour == None:
+        return None
+
     # reshape the display contour to be a list of four tuples
     cntr_points = display_contour.reshape(4,2)
     ratio = img.shape[0] / 300.0 # get the ratio of the original to the reduced image
@@ -98,8 +102,8 @@ def proc_with_tesseract(display_image):
     gry_display = exposure.rescale_intensity(gry_display, out_range= (0,255))
 
     # if the intensity of a pixel is over 70 then it is converted to 255 (white)
-    ret, thresh = cv2.threshold(gry_display, 50, 255, cv2.THRESH_BINARY)
-    cv2.imwrite('thresh.jpg', thresh) # for testing purposes to see what file will be read by tesseract
+    ret, thresh = cv2.threshold(gry_display, 80, 255, cv2.THRESH_BINARY)
+    cv2.imwrite('/var/www/wetr/app/temp/thresh.jpeg', thresh, [int(cv2.IMWRITE_JPEG_QUALITY), 100]) # for testing purposes to see what file will be read by tesseract
 
     # create a new PIL image to output the image to tesseract
     thresh = PIL.Image.fromarray(thresh)
@@ -109,6 +113,10 @@ def process_image(np_img):
     small_gray_img = preproc(np_img)
     filtered_edged_img = filter_and_edge(small_gray_img)
     display_contours = contour_and_extract_norm_display(np_img, filtered_edged_img)
+    
+    if display_contours == None:
+        return "0.0"
+
     warped_display = warp_perspective(np_img, display_contours)
     return proc_with_tesseract(warped_display)
 

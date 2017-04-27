@@ -13,12 +13,15 @@ app = Flask(__name__)
 def main():
     try:
         data = request.form['encoded_image']
-        im = np.frombuffer(base64.b64decode(data), dtype=np.uint8)
+        decoded = base64.b64decode(data)
+        im = np.fromstring(decoded, dtype=np.uint8)
         cv2_img = cv2.imdecode(im, 1)
-        return process_image(cv2_img)
+        try:
+            return process_image(cv2_img)
+        except Exception as e:
+            return "in process_image()" + str(e)
     except Exception as e:
         return str(e)
 
- 
 if __name__ == "__main__":
     app.run()
