@@ -61,26 +61,7 @@ def data_request():
         period = request.form['period']        
         if period == "week":
             day1 = str(datetime.utcnow() - timedelta(days=6))
-            day1 = day1[:10]
-            day2 = str(datetime.utcnow() - timedelta(days=5))
-            day2 = day2[:10]
-            day3 = str(datetime.utcnow() - timedelta(days=4))
-            day3 = day3[:10]
-            day4 = str(datetime.utcnow() - timedelta(days=3))
-            day4 = day4[:10]
-            day5 = str(datetime.utcnow() - timedelta(days=2))
-            day5 = day5[:10]
-            day6 = str(datetime.utcnow() - timedelta(days=1))
-            day6 = day6[:10]
-            day7 = str(datetime.utcnow())
-            day7 = day7[:10]
-            weights = Post.query.filter(Post.date.startswith(day1)).all()
-            weights.extend(Post.query.filter(Post.date.startswith(day2)).all())
-            weights.extend(Post.query.filter(Post.date.startswith(day3)).all())
-            weights.extend(Post.query.filter(Post.date.startswith(day4)).all())
-            weights.extend(Post.query.filter(Post.date.startswith(day5)).all())
-            weights.extend(Post.query.filter(Post.date.startswith(day6)).all())
-            weights.extend(Post.query.filter(Post.date.startswith(day7)).all())
+            weights = Post.query.filter(Post.date >= day1).all()
             return str(weights)
     except Exception:
         exc_type, exc_value, exc_traceback = sys.exc_info()
