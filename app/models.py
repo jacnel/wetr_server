@@ -33,4 +33,4 @@ class Post(db.Model):
         self.weight = weight
 
     def __repr__(self):
-        return '{0},{1},{2}'.format(self.name, self.date, self.weight)
+        return '{0};{1};{2}'.format(self.name, self.date, self.weight)

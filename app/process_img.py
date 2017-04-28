@@ -1,3 +1,4 @@
+from datetime import datetime
 import cv2
 import numpy as np
 import imutils
@@ -96,20 +97,21 @@ def warp_perspective(img, norm_pts):
     return cv2.warpPerspective(img, persp_matrix, (max_width, max_height))
 
 
-def proc_with_tesseract(display_image):
+def proc_with_tesseract(np_imgg,display_image):
     # convert warped image to gray scale, then rescale to be black and white
     gry_display = cv2.cvtColor(display_image, cv2.COLOR_BGR2GRAY)
     gry_display = exposure.rescale_intensity(gry_display, out_range= (0,255))
 
     # if the intensity of a pixel is over 70 then it is converted to 255 (white)
     ret, thresh = cv2.threshold(gry_display, 80, 255, cv2.THRESH_BINARY)
-    cv2.imwrite('/var/www/wetr/app/temp/thresh.jpeg', thresh, [int(cv2.IMWRITE_JPEG_QUALITY), 100]) # for testing purposes to see what file will be read by tesseract
-
     # create a new PIL image to output the image to tesseract
     thresh = PIL.Image.fromarray(thresh)
     return image_to_string(thresh, lang="eng", config="-psm 100 -c tessedit_char_whitelist=.0123456789")
 
 def process_image(np_img):
+    path = '/var/www/wetr/app/train/' + str(datetime.utcnow()) + ".jpg"
+    written = cv2.imwrite(path, np_img) # for testing purposes to see what file will be read by tesseract    
+
     small_gray_img = preproc(np_img)
     filtered_edged_img = filter_and_edge(small_gray_img)
     display_contours = contour_and_extract_norm_display(np_img, filtered_edged_img)
@@ -118,5 +120,5 @@ def process_image(np_img):
         return "0.0"
 
     warped_display = warp_perspective(np_img, display_contours)
-    return proc_with_tesseract(warped_display)
+    return proc_with_tesseract(np_img,warped_display)
 
