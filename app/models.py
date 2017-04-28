@@ -22,7 +22,8 @@ from app import db
 class Post(db.Model):
     __tablename__ = 'tbl_weight'
 
-    name = db.Column(db.String(45), primary_key=True)
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(45), nullable=True)
     date = db.Column(db.String(30), nullable=True)
     weight = db.Column(db.Float, nullable=True)
 
@@ -31,3 +32,5 @@ class Post(db.Model):
         self.date = date
         self.weight = weight
 
+    def __repr__(self):
+        return '{0},{1},{2}'.format(self.name, self.date, self.weight)
