@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, url_for
+'''from flask import Flask, render_template, request, url_for
 from process_img import process_image
 import io
 import base64
@@ -23,5 +23,20 @@ def main():
     except Exception as e:
         return str(e)
 
-if __name__ == "__main__":
+if  __name__ == "__main__":
+    app.run()
+'''
+
+from flask import Flask
+from flask_sqlalchemy import SQLAlchemy
+
+app = Flask(__name__)
+
+app.config.from_object('config')
+app.secret_key = "mysupersecretkey"
+
+db = SQLAlchemy(app)
+from app import views, models
+
+if __name__ == '__main__':
     app.run()
