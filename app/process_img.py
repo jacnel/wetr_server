@@ -113,12 +113,14 @@ def proc_with_tesseract(display_image):
     # create a new PIL image to output the image to tesseract
     thresh = PIL.Image.fromarray(thresh)
     retval = image_to_string(thresh, lang="letsgodigital", config="-psm 100 -c tessedit_char_whitelist=.0123456789")
-    decimal_i = retval.index('.')
-    if(decimal_i > 0):
-        return retval[:decimal_i + 2]
-    else:
-        return retval
 
+    try:
+        decimal_i = retval.index('.')
+        return retval[:decimal_i + 2]
+    except:
+        return retval
+    
+    
 def process_image(np_img):
     small_gray_img = preproc(np_img)
     filtered_edged_img = filter_and_edge(small_gray_img)
