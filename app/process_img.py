@@ -112,7 +112,7 @@ def proc_with_tesseract(display_image):
 
     # create a new PIL image to output the image to tesseract
     thresh = PIL.Image.fromarray(thresh)
-    retval = image_to_string(thresh, lang="letsgodigital", config="-psm 100 -c tessedit_char_whitelist=.0123456789")
+    retval = image_to_string(thresh, lang="letsgodigital", config="--tessdata-dir ./tessdata -psm 8 -c tessedit_char_whitelist=.0123456789")
 
     try:
         decimal_i = retval.index('.')
