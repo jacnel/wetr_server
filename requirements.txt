@@ -46,5 +46,5 @@ Twisted-Names==13.2.0
 Twisted-Web==13.2.0
 urllib3==1.7.1
 virtualenv==15.1.0
-Werkzeug==0.12.1
+Werkzeug==0.15.3
 zope.interface==4.0.5
