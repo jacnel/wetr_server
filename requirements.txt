@@ -9,7 +9,7 @@ decorator==3.4.0
 Flask==0.12.1
 html5lib==0.999
 imutils==0.4.2
-ipython==1.2.1
+ipython==7.16.3
 itsdangerous==0.24
 Jinja2==2.9.6
 jsonpatch==1.3
